@@ -19,6 +19,8 @@ namespace LeetCode
         {
             string[] output = (string[])queries.Clone();
 
+            var matches = new Dictionary<string, string>();
+
             var lcaseWords = new Dictionary<string, string>();
             var novowelWords = new Dictionary<string, string>();
 
@@ -51,8 +53,15 @@ namespace LeetCode
 
             for (var i = 0; i < output.Length; i++)
             {
+                if (matches.ContainsKey(output[i]))
+                {
+                    output[i] = matches[output[i]];
+                    continue;
+                }
+
                 if (wordlist.Contains(output[i]))
                 {
+                    matches.Add(output[i], output[i]);
                     continue;
                 }
 
@@ -63,6 +72,7 @@ namespace LeetCode
                     {
                         if (word.Value.Equals(lowerQueryWord))
                         {
+                            matches.Add(output[i], word.Key);
                             output[i] = word.Key;
                             break;
                         }
@@ -79,6 +89,7 @@ namespace LeetCode
                     {
                         if (word.Value.Equals(novowelQueryWord))
                         {
+                            matches.Add(output[i], word.Key);
                             output[i] = word.Key;
                             break;
                         }
@@ -87,6 +98,7 @@ namespace LeetCode
                     continue;
                 }
 
+                matches.Add(output[i], "");
                 output[i] = "";
             }
 
