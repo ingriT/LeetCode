@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace LeetCode
 {
@@ -22,34 +19,34 @@ namespace LeetCode
         {
             string[] output = (string[])queries.Clone();
 
-            var lcaseWords = new Dictionary<int, string>();
-            var novowelWords = new Dictionary<int, string>();
+            var lcaseWords = new Dictionary<string, string>();
+            var novowelWords = new Dictionary<string, string>();
 
             var lcases = new HashSet<string>();
             var novowels = new HashSet<string>();
 
-            var index = 0;
-
             foreach (var word in wordlist)
             {
-                var lowerWord = word.ToLower();
-
-                if (!lcases.Contains(lowerWord))
+                if (!lcaseWords.ContainsKey(word))
                 {
-                    lcases.Add(lowerWord);
+                    var lowerWord = word.ToLower();
+
+                    if (!lcases.Contains(lowerWord))
+                    {
+                        lcases.Add(lowerWord);
+                    }
+
+                    lcaseWords.Add(word, lowerWord);
+
+                    var novowelWord = System.Text.RegularExpressions.Regex.Replace(lowerWord, "[aeiou]", ".");
+
+                    if (!novowels.Contains(novowelWord))
+                    {
+                        novowels.Add(novowelWord);
+                    }
+
+                    novowelWords.Add(word, novowelWord);
                 }
-
-                lcaseWords.Add(index, lowerWord);
-
-                var novowelWord = Regex.Replace(lowerWord, "[aeiou]", ".");
-
-                if (!novowels.Contains(novowelWord))
-                {
-                    novowels.Add(novowelWord);
-                }
-
-                novowelWords.Add(index, novowelWord);
-                index++;
             }
 
             for (var i = 0; i < output.Length; i++)
@@ -66,7 +63,7 @@ namespace LeetCode
                     {
                         if (word.Value.Equals(lowerQueryWord))
                         {
-                            output[i] = wordlist[word.Key];
+                            output[i] = word.Key;
                             break;
                         }
                     }
@@ -74,7 +71,7 @@ namespace LeetCode
                     continue;
                 }
 
-                var novowelQueryWord = Regex.Replace(lowerQueryWord, "[aeiou]", ".");
+                var novowelQueryWord = System.Text.RegularExpressions.Regex.Replace(lowerQueryWord, "[aeiou]", ".");
 
                 if (novowels.Contains(novowelQueryWord))
                 {
@@ -82,7 +79,7 @@ namespace LeetCode
                     {
                         if (word.Value.Equals(novowelQueryWord))
                         {
-                            output[i] = wordlist[word.Key];
+                            output[i] = word.Key;
                             break;
                         }
                     }
