@@ -18,17 +18,20 @@ namespace LeetCode
         public string[] Spellchecker(string[] wordlist, string[] queries)
         {
             string[] output = (string[])queries.Clone();
-
             var matches = new Dictionary<string, string>();
-
             var lcaseWords = new Dictionary<string, string>();
             var novowelWords = new Dictionary<string, string>();
-
             var lcases = new HashSet<string>();
             var novowels = new HashSet<string>();
+            var wordList = new HashSet<string>();
 
             foreach (var word in wordlist)
             {
+                if (!wordList.Contains(word))
+                {
+                    wordList.Add(word);
+                }
+
                 if (!lcaseWords.ContainsKey(word))
                 {
                     var lowerWord = word.ToLower();
@@ -59,7 +62,7 @@ namespace LeetCode
                     continue;
                 }
 
-                if (wordlist.Contains(output[i]))
+                if (wordList.Contains(output[i]))
                 {
                     matches.Add(output[i], output[i]);
                     continue;
@@ -104,6 +107,5 @@ namespace LeetCode
 
             return output;
         }
-
     }
 }
