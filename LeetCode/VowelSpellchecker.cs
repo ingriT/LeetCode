@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace LeetCode
@@ -19,37 +20,53 @@ namespace LeetCode
         /// <returns></returns>
         public string[] Spellchecker(string[] wordlist, string[] queries)
         {
-            var output = new List<string>();
+            string[] output = (string[])queries.Clone();
 
             var lcaseWords = new Dictionary<int, string>();
             var novowelWords = new Dictionary<int, string>();
+
+            var lcases = new HashSet<string>();
+            var novowels = new HashSet<string>();
+
             var index = 0;
 
             foreach (var word in wordlist)
             {
                 var lowerWord = word.ToLower();
+
+                if (!lcases.Contains(lowerWord))
+                {
+                    lcases.Add(lowerWord);
+                }
+
                 lcaseWords.Add(index, lowerWord);
-                novowelWords.Add(index, lowerWord.Replace("a", ".").Replace("e", ".").Replace("i", ".")
-                        .Replace("o", ".").Replace("u", "."));
+
+                var novowelWord = Regex.Replace(lowerWord, "[aeiou]", ".");
+
+                if (!novowels.Contains(novowelWord))
+                {
+                    novowels.Add(novowelWord);
+                }
+
+                novowelWords.Add(index, novowelWord);
                 index++;
             }
 
-            foreach(var queryWord in queries)
+            for (var i = 0; i < output.Length; i++)
             {
-                if (wordlist.Contains(queryWord))
+                if (wordlist.Contains(output[i]))
                 {
-                    output.Add(queryWord);
                     continue;
                 }
 
-                var lowerQueryWord = queryWord.ToLower();
-                if (lcaseWords.ContainsValue(lowerQueryWord))
+                var lowerQueryWord = output[i].ToLower();
+                if (lcases.Contains(lowerQueryWord))
                 {
                     foreach (var word in lcaseWords)
                     {
                         if (word.Value.Equals(lowerQueryWord))
                         {
-                            output.Add(wordlist[word.Key]);
+                            output[i] = wordlist[word.Key];
                             break;
                         }
                     }
@@ -57,16 +74,15 @@ namespace LeetCode
                     continue;
                 }
 
-                var novowelQueryWord = lowerQueryWord.Replace("a", ".").Replace("e", ".").Replace("i", ".")
-                        .Replace("o", ".").Replace("u", ".");
+                var novowelQueryWord = Regex.Replace(lowerQueryWord, "[aeiou]", ".");
 
-                if (novowelWords.ContainsValue(novowelQueryWord))
+                if (novowels.Contains(novowelQueryWord))
                 {
                     foreach (var word in novowelWords)
                     {
                         if (word.Value.Equals(novowelQueryWord))
                         {
-                            output.Add(wordlist[word.Key]);
+                            output[i] = wordlist[word.Key];
                             break;
                         }
                     }
@@ -74,10 +90,10 @@ namespace LeetCode
                     continue;
                 }
 
-                output.Add(string.Empty);
+                output[i] = "";
             }
 
-            return output.ToArray();
+            return output;
         }
 
     }
