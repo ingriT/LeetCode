@@ -27,14 +27,14 @@ namespace LeetCode
 
             foreach (var word in wordlist)
             {
-                lcaseWords.Add(index, word.ToLower());
-                novowelWords.Add(index, word.ToLower().Replace("a", ".").Replace("e", ".").Replace("i", ".")
+                var lowerWord = word.ToLower();
+                lcaseWords.Add(index, lowerWord);
+                novowelWords.Add(index, lowerWord.Replace("a", ".").Replace("e", ".").Replace("i", ".")
                         .Replace("o", ".").Replace("u", "."));
-
                 index++;
             }
 
-            foreach (var queryWord in queries)
+            foreach(var queryWord in queries)
             {
                 if (wordlist.Contains(queryWord))
                 {
@@ -42,11 +42,12 @@ namespace LeetCode
                     continue;
                 }
 
-                if (lcaseWords.ContainsValue(queryWord))
+                var lowerQueryWord = queryWord.ToLower();
+                if (lcaseWords.ContainsValue(lowerQueryWord))
                 {
                     foreach (var word in lcaseWords)
                     {
-                        if (word.Value.Equals(queryWord.ToLower()))
+                        if (word.Value.Equals(lowerQueryWord))
                         {
                             output.Add(wordlist[word.Key]);
                             break;
@@ -56,15 +57,14 @@ namespace LeetCode
                     continue;
                 }
 
-                var queryWordToCheck = queryWord.ToLower().Replace("a", ".").Replace("e", ".").Replace("i", ".")
-                    .Replace("o", ".").Replace("u", ".");
+                var novowelQueryWord = lowerQueryWord.Replace("a", ".").Replace("e", ".").Replace("i", ".")
+                        .Replace("o", ".").Replace("u", ".");
 
-                if (novowelWords.ContainsValue(queryWordToCheck))
+                if (novowelWords.ContainsValue(novowelQueryWord))
                 {
                     foreach (var word in novowelWords)
                     {
-
-                        if (word.Value.Equals(queryWordToCheck))
+                        if (word.Value.Equals(novowelQueryWord))
                         {
                             output.Add(wordlist[word.Key]);
                             break;
@@ -74,7 +74,7 @@ namespace LeetCode
                     continue;
                 }
 
-                output.Add("");
+                output.Add(string.Empty);
             }
 
             return output.ToArray();
