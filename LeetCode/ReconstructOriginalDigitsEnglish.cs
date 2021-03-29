@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace LeetCode
 {
@@ -35,9 +34,9 @@ namespace LeetCode
             numbers.Add("1", one);
             numbers.Add("9", nine);
 
-            var input = s;
+            var input = s.ToList();
 
-            while (input.Length > 0)
+            while (input.Count > 0)
             {
                 foreach (var number in numbers)
                 {
@@ -60,7 +59,7 @@ namespace LeetCode
 
                         foreach (var c in number.Value)
                         {
-                            input = input.Remove(input.IndexOf(c), 1);
+                            input.Remove(c);
                         }
 
                         output.Add(number.Key);
@@ -69,11 +68,10 @@ namespace LeetCode
             }
 
             var result = new StringBuilder();
-            foreach(var o in output.OrderBy(x => x))
+            foreach (var o in output.OrderBy(o => o))
             {
                 result.Append(o);
             }
-
             return result.ToString();
         }
     }
