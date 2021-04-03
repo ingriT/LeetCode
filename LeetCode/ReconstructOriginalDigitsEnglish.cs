@@ -5,6 +5,7 @@ using System.Text;
 
 namespace LeetCode
 {
+    //TODO THIS IS TOO SLOW
     public class ReconstructOriginalDigitsEnglish
     {
         public string OriginalDigits(string s)
@@ -12,26 +13,26 @@ namespace LeetCode
             var output = new List<string>();
 
             var zero = "zero".ToCharArray();
+            var two = "wto".ToCharArray();
+            var six = "xis".ToCharArray();
+            var four = "ufor".ToCharArray();
+            var three = "rthee".ToCharArray();
             var one = "one".ToCharArray();
-            var two = "two".ToCharArray();
-            var three = "three".ToCharArray();
-            var four = "four".ToCharArray();
             var five = "five".ToCharArray();
-            var six = "six".ToCharArray();
             var seven = "seven".ToCharArray();
-            var eight = "eight".ToCharArray();
+            var eight = "geiht".ToCharArray();
             var nine = "nine".ToCharArray();
 
             var numbers = new Dictionary<string, char[]>();
             numbers.Add("0", zero);
             numbers.Add("2", two);
             numbers.Add("6", six);
-            numbers.Add("8", eight);
-            numbers.Add("7", seven);
-            numbers.Add("5", five);
             numbers.Add("4", four);
             numbers.Add("3", three);
             numbers.Add("1", one);
+            numbers.Add("5", five);
+            numbers.Add("7", seven);
+            numbers.Add("8", eight);
             numbers.Add("9", nine);
 
             var input = s.ToList();
@@ -40,19 +41,9 @@ namespace LeetCode
             {
                 foreach (var number in numbers)
                 {
-                    var hasNumber = true;
-                    while (hasNumber)
+                    while (true)
                     {
-                        foreach (var c in number.Value)
-                        {
-                            if (!input.Contains(c))
-                            {
-                                hasNumber = false;
-                                break;
-                            }
-                        }
-
-                        if (!hasNumber)
+                        if (!input.Contains(number.Value[0]))
                         {
                             break;
                         }
