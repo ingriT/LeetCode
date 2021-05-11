@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LeetCode
 {
@@ -10,12 +8,28 @@ namespace LeetCode
     {
         public int MaxArea(int[] height)
         {
-            if (height.Length == 2)
-            {
-                return height.OrderBy(i => i).First();
-            }
+            int size = height.Length;
+            if (size == 1) { return 0; }
+            if (size == 2) { return Math.Min(height[0], height[1]); }
 
-            return height[0];
+            int left = 0;
+            int right = size - 1;
+            int max_area = 0;
+
+            while (left != right)
+            {
+                if (height[left] < height[right])
+                {
+                    max_area = Math.Max(max_area, height[left] * (right - left));
+                    left++;
+                }
+                else
+                {
+                    max_area = Math.Max(max_area, height[right] * (right - left));
+                    right--;
+                }
+            }
+            return max_area;
         }
     }
 }
